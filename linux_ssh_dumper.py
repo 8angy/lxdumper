@@ -40,10 +40,10 @@ def get_target_details():
 
 	child = pexpect.spawn('/bin/bash', ['-c', details_cmd]) # create a shell to pipe our dump command with
 	i = child.expect([pexpect.TIMEOUT, SSH_NEWKEY, '[#$] ', '(?i)password'])
-	if i == 0: # Timeout
+	if i == 0:
 		print('[!] ERROR! SSH connection has failed.')
 		sys.exit (1)
-	if i == 1: # In this case SSH does not have the public key cached.
+	if i == 1: # public key not cached.
 		child.sendline ('yes')
 		child.expect ('(?i)password')
 	if i == 2:
@@ -87,10 +87,10 @@ def get_target_partitions():
 
 	child = pexpect.spawn('/bin/bash', ['-c', fdisk_cmd]) # create a shell to pipe our dump command with
 	i = child.expect([pexpect.TIMEOUT, SSH_NEWKEY, '[#$] ', '(?i)password'])
-	if i == 0: # Timeout
+	if i == 0:
 		print('[!] ERROR! SSH connection has failed.')
 		sys.exit (1)
-	if i == 1: # In this case SSH does not have the public key cached.
+	if i == 1: # public key not cached.
 		child.sendline ('yes')
 		child.expect ('(?i)password')
 	if i == 2:
@@ -124,10 +124,10 @@ def run(BLOCK_DEV, dump_filename):
 
 	child = pexpect.spawn('/bin/bash', ['-c', dump_cmd]) # create a shell to pipe our dump command with
 	i = child.expect([pexpect.TIMEOUT, SSH_NEWKEY, '[#$] ', '(?i)password'])
-	if i == 0: # Timeout
+	if i == 0:
 		print('[!] ERROR! could not login with SSH')
 		sys.exit (1)
-	if i == 1: # In this case SSH does not have the public key cached.
+	if i == 1: # public key not cached.
 		child.sendline ('yes')
 		child.expect ('(?i)password')
 	if i == 2:
