@@ -16,7 +16,6 @@ import ipaddress
 
 SSH_NEWKEY = '(?i)are you sure you want to continue connecting'
 
-
 def RepresentsInt(s):
     try: 
         int(s)
@@ -37,8 +36,8 @@ def get_target_details():
 	os.system('clear')
 	operating_system = ''
 	details_cmd = ('ssh {0}@{1} lsb_release -d'.format(args.TU, args.TI))
-
-	child = pexpect.spawn('/bin/bash', ['-c', details_cmd]) # create a shell to pipe our dump command with
+	# create a shell to pipe our dump command with
+	child = pexpect.spawn('/bin/bash', ['-c', details_cmd]) 
 	i = child.expect([pexpect.TIMEOUT, SSH_NEWKEY, '[#$] ', '(?i)password'])
 	if i == 0:
 		print('[!] ERROR! SSH connection has failed.')
@@ -81,11 +80,10 @@ def parse_partitions(shell_output):
 	return partitions
 
 
-
 def get_target_partitions():
 	fdisk_cmd = ('ssh {0}@{1} cat /proc/partitions'.format(args.TU, args.TI))
-
-	child = pexpect.spawn('/bin/bash', ['-c', fdisk_cmd]) # create a shell to pipe our dump command with
+	# create a shell to pipe our dump command with
+	child = pexpect.spawn('/bin/bash', ['-c', fdisk_cmd]) 
 	i = child.expect([pexpect.TIMEOUT, SSH_NEWKEY, '[#$] ', '(?i)password'])
 	if i == 0:
 		print('[!] ERROR! SSH connection has failed.')
@@ -100,7 +98,7 @@ def get_target_partitions():
 		partitions = parse_partitions(child.read().decode('ascii'))
 		child.terminate()
 
-		print('')# print enter creates enough delay to gather the entire buff output
+		print('')
 		for i in partitions:
 			print(i)
 
@@ -114,15 +112,14 @@ def get_target_partitions():
 		return (partitions[int(chosen_partition)]).split(' ')
 
 
-
 def run(BLOCK_DEV, dump_filename):
 	global running
 	checksum = None
-
 	dump_cmd = ('ssh {0}@{1} "sudo -S dd conv=sync,noerror bs={2}k if=/dev/{3} | tee >({4} >/dev/stderr) | gzip -{6} -" '
 		'| dd bs={2} of={5}.gz'.format(args.TU, args.TI, args.BS, BLOCK_DEV, args.CS, dump_filename, args.Z))
-
-	child = pexpect.spawn('/bin/bash', ['-c', dump_cmd]) # create a shell to pipe our dump command with
+	
+	# create a shell to pipe our dump command with
+	child = pexpect.spawn('/bin/bash', ['-c', dump_cmd]) 
 	i = child.expect([pexpect.TIMEOUT, SSH_NEWKEY, '[#$] ', '(?i)password'])
 	if i == 0:
 		print('[!] ERROR! could not login with SSH')
@@ -151,7 +148,6 @@ def run(BLOCK_DEV, dump_filename):
 			open(checksum_tf, 'a').close()
 			with open(checksum_tf, 'w') as ctf:
 				ctf.write(checksum)
-
 
 
 def progress(total_size, partition, dump_filename):
@@ -236,8 +232,7 @@ if __name__ == '__main__':
 		print('[!] Error! Checksum [--CS] must be either "cksum", "md5sum" or "sha1sum".')
 		sys.exit()
 
-	# get target
-	while True:
+	while True: # connect to target
 		print('\nPlease input the password for the target: {}'.format(args.TU))
 		target_passwd = getpass()
 		if len(target_passwd) > 0:
