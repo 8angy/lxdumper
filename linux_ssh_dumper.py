@@ -34,7 +34,7 @@ def check_ip(ip):
 
 
 def get_target_details():
-	os.system('cls' if os.name == 'nt' else 'clear')
+	os.system('clear')
 	operating_system = ''
 	details_cmd = ('ssh {0}@{1} lsb_release -d'.format(args.TU, args.TI))
 
@@ -43,7 +43,7 @@ def get_target_details():
 	if i == 0:
 		print('[!] ERROR! SSH connection has failed.')
 		sys.exit (1)
-	if i == 1: # public key not cached.
+	if i == 1: # cache public key
 		child.sendline ('yes')
 		child.expect ('(?i)password')
 	if i == 2:
@@ -90,7 +90,7 @@ def get_target_partitions():
 	if i == 0:
 		print('[!] ERROR! SSH connection has failed.')
 		sys.exit (1)
-	if i == 1: # public key not cached.
+	if i == 1: # cache public key
 		child.sendline ('yes')
 		child.expect ('(?i)password')
 	if i == 2:
@@ -127,7 +127,7 @@ def run(BLOCK_DEV, dump_filename):
 	if i == 0:
 		print('[!] ERROR! could not login with SSH')
 		sys.exit (1)
-	if i == 1: # public key not cached.
+	if i == 1: # cache public key
 		child.sendline ('yes')
 		child.expect ('(?i)password')
 	if i == 2:
@@ -233,7 +233,7 @@ if __name__ == '__main__':
 		pass
 	else:
 		running = False
-		print('[!] Error! Checksum [--CS] must be either "chsum", "md5sum" or "sha1sum".')
+		print('[!] Error! Checksum [--CS] must be either "cksum", "md5sum" or "sha1sum".')
 		sys.exit()
 
 	# get target
