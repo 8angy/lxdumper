@@ -1,5 +1,5 @@
 # Linux Dumper (DD Forensic Imager over SSH)
-# Author Mike Bangham (michael.bangham3@gmail.com)
+# Author Mike Bangham Contact: michael[.d0t.]bangham3[.at.]gmail.com
 # Inspired by the Forensic Focus Article by Chris Cohen:
 # https://www.forensicfocus.com/articles/asking-a-vps-to-image-itself/
 # Python3 - tested on targets: Debian, Ubuntu, Lubuntu, Kubuntu, Raspbian, CentOS
